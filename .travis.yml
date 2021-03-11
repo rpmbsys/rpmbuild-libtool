@@ -36,8 +36,7 @@ deploy:
 # https://docs.travis-ci.com/user/build-matrix/#explicitly-included-jobs-with-only-one-element-in-the-build-matrix
 jobs:
   include:
-    - {}
-    - stage: build
+    - stage: deploy
       install: skip
       before_script: skip
       script:
@@ -49,7 +48,3 @@ jobs:
         script: docker-compose -f build/docker-compose.yml push
         on:
           all_branches: true
-
-stages:
-  - test
-  - build
