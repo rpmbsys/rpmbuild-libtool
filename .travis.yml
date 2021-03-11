@@ -48,3 +48,7 @@ jobs:
         script: docker-compose -f build/docker-compose.yml push
         on:
           all_branches: true
+
+stages:
+  - test
+  - deploy
