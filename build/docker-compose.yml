@@ -1,0 +1,15 @@
+version: "3.5"
+services:
+  centos7build:
+    build:
+      context: .
+      args:
+        centos: $OS7
+    image: "aursu/rpmbuild:${OS7TAG}-build-gcc8"
+  centos7buildroot:
+    build:
+      context: .
+      args:
+        centos: $OS7
+        image: rpmb-root
+    image: "aursu/rpmbuild:${OS7TAG}-build-gcc8-root"

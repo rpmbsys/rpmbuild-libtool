@@ -32,3 +32,22 @@ deploy:
   script: docker-compose -f rpmbuild/docker-compose.bintray.yml run --rm -e BINTRAY_USER=$BINTRAY_USER -e BINTRAY_API_KEY=$BINTRAY_API_KEY -e BINTRAY_REPO=$BINTRAY_REPO -e PACKAGE_VCS_URL=$PACKAGE_VCS_URL ${UPLOADER}
   on:
     all_branches: true
+
+jobs:
+  include:
+    - stage: build
+      install: skip
+      before_script: skip
+      script:
+        - docker-compose -f build/docker-compose.yml build --no-cache --pull
+      before_deploy:
+        - docker login -u $DOCKER_USER -p $DOCKER_PASS
+      deploy:
+        provider: script
+        script: docker-compose -f build/docker-compose.yml push
+        on:
+          all_branches: true
+
+stages:
+  - test
+  - build
