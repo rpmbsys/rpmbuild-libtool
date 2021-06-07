@@ -10,17 +10,17 @@ addons:
 
 env:
   global:
-    - PACKAGE_VCS_URL=https://gitlab.com/aursu/rpmbuild-libtool.git
     - BINTRAY_REPO=custom
+    - ARTIFACTORY_URL=https://rpmb.jfrog.io
+    - OS7=7.9.2009
+    - OS7TAG=7.9.2009
 
 # https://docs.travis-ci.com/user/build-matrix/#explicitly-included-jobs-with-only-one-element-in-the-build-matrix
 jobs:
   include:
     - stage: test
-      install:
-        - docker-compose -f docker-compose.base.yml build --no-cache --pull ${BASE}
       before_script:
-        - docker-compose build --no-cache ${BUILD}
+        - docker-compose build --no-cache --pull ${BUILD}
       script:
         - docker-compose up --exit-code-from ${BUILD} ${BUILD}
       before_deploy:
@@ -28,13 +28,11 @@ jobs:
       deploy:
         provider: script
         script:
-          - docker-compose -f rpmbuild/docker-compose.bintray.yml run --rm -e BINTRAY_USER=$BINTRAY_USER -e BINTRAY_API_KEY=$BINTRAY_API_KEY -e BINTRAY_REPO=$BINTRAY_REPO -e PACKAGE_VCS_URL=$PACKAGE_VCS_URL ${UPLOADER}
+          - docker-compose -f rpmbuild/docker-compose.bintray.yml run --rm -e BINTRAY_USER=$BINTRAY_USER -e BINTRAY_API_KEY=$BINTRAY_API_KEY -e BINTRAY_REPO=$BINTRAY_REPO -e ARTIFACTORY_URL=$ARTIFACTORY_URL ${UPLOADER}
         on:
           all_branches: true
-      env: BASE=centos7base BUILD=centos7build UPLOADER=centos7bintray
+      env: BUILD=centos7build UPLOADER=centos7bintray
     - stage: deploy
-      install: skip
-      before_script: skip
       script:
         - docker-compose -f build/docker-compose.yml build --no-cache --pull
       before_deploy:

@@ -7,8 +7,8 @@ RUN yum -y --enablerepo bintray-custom install \
         autoconf \
         bison \
         flex \
-        gcc-8.2.1 \
-        gcc-c++-8.2.1 \
+        gcc-8.3.1 \
+        gcc-c++-8.3.1 \
         libtool-2.4.6 \
         make \
         which \

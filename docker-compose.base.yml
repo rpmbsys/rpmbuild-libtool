@@ -1,9 +1,0 @@
-version: "3.4"
-services:
-  centos7base:
-    build:
-      context: .
-      dockerfile: Dockerfile.base
-      args:
-        centos: $OS7
-    image: "aursu/libtoolbuild:${OS7}-base"
