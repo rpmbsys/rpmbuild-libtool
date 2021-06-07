@@ -3,6 +3,9 @@
 # See rhbz#1193591
 %global automake_version %(set -- `automake --version | head -n 1` ; echo ${4-unknown})
 
+%define _debugsource_template %{nil}
+%define debug_package %{nil}
+
 %bcond_without check
 
 Summary: The GNU Portable Library Tool
