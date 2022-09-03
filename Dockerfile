@@ -9,9 +9,9 @@ RUN yum -y install \
 
 RUN rpm -e libtool \
     && yum -y --enablerepo bintray-custom install \
-        gcc-c++ \
-        gcc-gfortran \
-        libstdc++-devel \
+        gcc-c++-8.5.0 \
+        gcc-gfortran-8.5.0 \
+        libstdc++-devel-8.5.0 \
     && yum clean all && rm -rf /var/cache/yum
 
 COPY SOURCES ${BUILD_TOPDIR}/SOURCES
