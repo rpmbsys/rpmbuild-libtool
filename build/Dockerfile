@@ -1,6 +1,6 @@
 ARG os=7.9.2009
 ARG image=rpmb
-FROM aursu/rpmbuild:${centos}-${image}
+FROM aursu/rpmbuild:${os}-${image}
 
 # install common build tools (autotools, compilers, parsers etc)
 RUN yum -y --enablerepo bintray-custom install \
