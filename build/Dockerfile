@@ -1,4 +1,4 @@
-ARG centos=7.9.2009
+ARG os=7.9.2009
 ARG image=rpmb
 FROM aursu/rpmbuild:${centos}-${image}
 

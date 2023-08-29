@@ -1,0 +1,36 @@
+image: aursu/rpmbuild:7.9.2009-docker
+
+stages:
+  - build
+  - deploy
+  - docker
+
+variables:
+  GIT_SUBMODULE_STRATEGY: recursive
+  OS7: 7.9.2009
+  OS7TAG: 7.9.2009
+  YUM0: rpmb.jfrog.io/artifactory/custom
+
+centos7build:
+  stage: build
+  timeout: 6h
+  variables:
+    BUILD: centos7build
+  script:
+    - docker-compose build --no-cache --pull --build-arg repopath=$YUM0 $BUILD
+    - docker-compose run -v $CI_COMMIT_SHORT_SHA:/home/centos/rpmbuild/RPMS $BUILD
+
+centos7deploy:
+  stage: deploy
+  variables:
+    FTPTRAY_USER: centos-7
+    FTPTRAY_REPO: custom
+  script:
+    - docker run --rm -v $CI_COMMIT_SHORT_SHA:/home/centos/rpmbuild/RPMS -e FTPTRAY_USER=$FTPTRAY_USER -e FTPTRAY_PASSWORD=$FTPTRAY_PASSWORD -e FTPTRAY_REPO=$FTPTRAY_REPO -e FTPTRAY_HOST=$FTPTRAY_HOST aursu/rpmbuild:ftptray /usr/local/bin/ftptray.py /home/centos/rpmbuild/RPMS
+
+centos7docker:
+  stage: docker
+  script:
+    - docker-compose -f build/docker-compose.yml build --no-cache --pull
+    - docker login -u $DOCKER_USER -p $DOCKER_PASS
+    - docker-compose -f build/docker-compose.yml push
