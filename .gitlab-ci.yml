@@ -32,6 +32,6 @@ centos7deploy:
 centos7docker:
   stage: docker
   script:
-    - docker-compose -f build/docker-compose.yml build --no-cache --pull
+    - docker-compose -f build/docker-compose.yml build --no-cache --pull --build-arg repopath=$YUM0
     - docker login -u $DOCKER_USER -p $DOCKER_PASS
     - docker-compose -f build/docker-compose.yml push

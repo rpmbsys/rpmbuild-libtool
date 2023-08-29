@@ -2,6 +2,9 @@ ARG os=7.9.2009
 ARG image=rpmb
 FROM aursu/rpmbuild:${os}-${image}
 
+ARG repopath=rpmb.jfrog.io/artifactory/custom
+ENV YUM0 $repopath
+
 # install common build tools (autotools, compilers, parsers etc)
 RUN yum -y --enablerepo bintray-custom install \
         autoconf \
