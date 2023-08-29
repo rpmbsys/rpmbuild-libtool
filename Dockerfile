@@ -1,6 +1,9 @@
 ARG os=7.9.2009
 FROM aursu/rpmbuild:${os}-build
 
+ARG repopath=rpmb.jfrog.io/artifactory/custom
+ENV YUM0 $repopath
+
 USER root
 RUN yum -y install \
         help2man \
