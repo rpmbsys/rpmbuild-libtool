@@ -17,6 +17,7 @@ centos7build:
   variables:
     BUILD: centos7build
   script:
+    - env
     - docker-compose build --no-cache --pull --build-arg repopath=$YUM0 $BUILD
     - docker-compose run -v $CI_COMMIT_SHORT_SHA:/home/centos/rpmbuild/RPMS $BUILD
 
