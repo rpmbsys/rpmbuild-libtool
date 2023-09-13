@@ -5,3 +5,15 @@ services:
       context: .
       args:
         os: $OS7
+  centos7gcc11:
+    build:
+      context: .
+      dockerfile: Dockerfile.gcc11
+      args:
+        os: $OS7
+  rocky8build:
+    build:
+      context: .
+      dockerfile: Dockerfile.RL8
+      args:
+        os: $RL8

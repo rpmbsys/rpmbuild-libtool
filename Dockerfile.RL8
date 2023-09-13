@@ -1,0 +1,38 @@
+ARG os=8.8.20230518
+FROM aursu/rpmbuild:${os}-build
+
+ARG repopath=rpmb.jfrog.io/artifactory/custom
+ARG gccrepopath=rpmb.jfrog.io/artifactory/gcc11custom
+ARG repoproxy=
+
+ENV DNF0 $repopath
+ENV DNF2 $gccrepopath
+ENV DNF3 rocky
+
+ENV http_proxy $repoproxy
+ENV https_proxy $repoproxy
+
+USER root
+COPY system/etc/yum.repos.d/bintray-gcccustom.repo /etc/yum.repos.d/bintray-gcccustom.repo
+
+RUN dnf -y install \
+        help2man \
+        texinfo \
+    && dnf clean all && rm -rf /var/cache/dnf /var/lib/rpm/__db*
+
+RUN rpm -e libtool \
+    && dnf -y --enablerepo bintray-custom --enablerepo bintray-gcccustom install \
+        "annobin >= 12.24" \
+        gcc-c++-11.3.1 \
+        gcc-gfortran-11.3.1 \
+        libstdc++-devel-11.3.1 \
+    && dnf clean all && rm -rf /var/cache/dnf /var/lib/rpm/__db*
+
+COPY SOURCES ${BUILD_TOPDIR}/SOURCES
+COPY SPECS ${BUILD_TOPDIR}/SPECS
+
+RUN chown -R $BUILD_USER ${BUILD_TOPDIR}/{SOURCES,SPECS}
+
+USER $BUILD_USER
+ENTRYPOINT ["/usr/bin/rpmbuild", "libtool.spec"]
+CMD ["-ba"]

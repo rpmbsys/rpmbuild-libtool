@@ -1,0 +1,7 @@
+[bintray-gcccustom]
+name=bintray-gcccustom
+baseurl=https://$DNF2/$DNF3/$releasever/
+gpgcheck=0
+repo_gpgcheck=0
+enabled=0
+sslverify=0

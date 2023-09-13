@@ -3,7 +3,11 @@ ARG image=rpmb
 FROM aursu/rpmbuild:${os}-${image}
 
 ARG repopath=rpmb.jfrog.io/artifactory/custom
+ARG repoproxy=
+
 ENV YUM0 $repopath
+ENV http_proxy $repoproxy
+ENV https_proxy $repoproxy
 
 # install common build tools (autotools, compilers, parsers etc)
 RUN yum -y --enablerepo bintray-custom install \
@@ -12,7 +16,7 @@ RUN yum -y --enablerepo bintray-custom install \
         flex \
         gcc-8.5.0 \
         gcc-c++-8.5.0 \
-        libtool-2.4.6 \
+        "libtool >= 2.4.6" \
         make \
         which \
     && yum clean all && rm -rf /var/cache/yum /var/lib/rpm/__db*

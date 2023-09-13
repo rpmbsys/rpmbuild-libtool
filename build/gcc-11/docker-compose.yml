@@ -1,0 +1,30 @@
+version: "3"
+services:
+  centos7build:
+    build:
+      context: .
+      args:
+        os: $OS7
+    image: "aursu/rpmbuild:${OS7TAG}-build-gcc11"
+  centos7buildroot:
+    build:
+      context: .
+      args:
+        os: $OS7
+        image: rpmb-root
+    image: "aursu/rpmbuild:${OS7TAG}-build-gcc11-root"
+  rocky8build:
+    build:
+      context: .
+      dockerfile: Dockerfile.RL8
+      args:
+        os: $RL8
+    image: "aursu/rpmbuild:${RL8TAG}-build-gcc11"
+  rocky8buildroot:
+    build:
+      context: .
+      dockerfile: Dockerfile.RL8
+      args:
+        os: $RL8
+        image: rpmb-root
+    image: "aursu/rpmbuild:${RL8TAG}-build-gcc11-root"

@@ -9,7 +9,11 @@ variables:
   GIT_SUBMODULE_STRATEGY: recursive
   OS7: 7.9.2009
   OS7TAG: 7.9.2009
+  RL8: 8.8.20230518
+  RL8TAG: 8.8.20230518
+  CI_COMMIT_SHORT_SHA_RL8: ${CI_COMMIT_SHORT_SHA}-rocky-8
   YUM0: rpmb.jfrog.io/artifactory/custom
+  YUM2: rpmb.jfrog.io/artifactory/custom
 
 centos7build:
   stage: build
@@ -32,6 +36,6 @@ centos7deploy:
 centos7docker:
   stage: docker
   script:
-    - docker-compose -f build/docker-compose.yml build --no-cache --pull --build-arg repopath=$YUM0
+    - docker-compose -f build/gcc-8/docker-compose.yml build --no-cache --pull --build-arg repopath=$YUM0
     - docker login -u $DOCKER_USER -p $DOCKER_PASS
     - docker-compose -f build/docker-compose.yml push

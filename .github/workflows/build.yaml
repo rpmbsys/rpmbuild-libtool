@@ -8,6 +8,8 @@ env:
   DOCKER_PASS: ${{ secrets.DOCKER_PASS }}
   OS7: 7.9.2009
   OS7TAG: 7.9.2009
+  RL8: 8.8.20230518
+  RL8TAG: 8.8.20230518
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -36,7 +38,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        compose-file: [build/docker-compose.yml]
+        compose-file: [build/gcc-8/docker-compose.yml]
     steps:
       - uses: actions/checkout@v2
         with:
