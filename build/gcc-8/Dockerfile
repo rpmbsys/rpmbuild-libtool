@@ -16,7 +16,7 @@ RUN yum -y --enablerepo bintray-custom install \
         flex \
         gcc-8.5.0 \
         gcc-c++-8.5.0 \
-        "libtool >= 2.4.6" \
+        "libtool >= 2.4.7" \
         make \
         which \
     && yum clean all && rm -rf /var/cache/yum /var/lib/rpm/__db*

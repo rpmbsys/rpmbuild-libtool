@@ -67,14 +67,14 @@ rocky8deploy:
   script:
     - docker run --rm -v $CI_COMMIT_SHORT_SHA_RL8:/home/centos/rpmbuild/RPMS -e FTPTRAY_USER=$FTPTRAY_USER -e FTPTRAY_PASSWORD=$FTPTRAY_PASSWORD -e FTPTRAY_REPO=$FTPTRAY_REPO -e FTPTRAY_HOST=$FTPTRAY_HOST aursu/rpmbuild:ftptray /usr/local/bin/ftptray.py /home/centos/rpmbuild/RPMS
 
-centos7docker:
+gcc8docker:
   stage: docker
   script:
     - docker-compose -f build/gcc-8/docker-compose.yml build --no-cache --pull --build-arg repopath=$YUM0
     - docker login -u $DOCKER_USER -p $DOCKER_PASS
     - docker-compose -f build/gcc-8/docker-compose.yml push
 
-rocky8docker:
+gcc11docker:
   stage: docker
   script:
     - docker-compose -f build/gcc-11/docker-compose.yml build --no-cache --pull --build-arg repopath=$YUM0 --build-arg gccrepopath=$YUM2
