@@ -72,4 +72,11 @@ centos7docker:
   script:
     - docker-compose -f build/gcc-8/docker-compose.yml build --no-cache --pull --build-arg repopath=$YUM0
     - docker login -u $DOCKER_USER -p $DOCKER_PASS
-    - docker-compose -f build/docker-compose.yml push
+    - docker-compose -f build/gcc-8/docker-compose.yml push
+
+rocky8docker:
+  stage: docker
+  script:
+    - docker-compose -f build/gcc-11/docker-compose.yml build --no-cache --pull --build-arg repopath=$YUM0 --build-arg gccrepopath=$YUM2
+    - docker login -u $DOCKER_USER -p $DOCKER_PASS
+    - docker-compose -f build/gcc-11/docker-compose.yml push
