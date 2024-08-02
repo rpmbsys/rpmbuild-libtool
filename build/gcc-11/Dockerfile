@@ -1,4 +1,4 @@
-ARG os=7.9.2009
+ARG os=8.10.20240528
 ARG image=rpmb
 FROM aursu/rpmbuild:${os}-${image}
 
@@ -6,27 +6,27 @@ ARG repopath=rpmb.jfrog.io/artifactory/custom
 ARG gccrepopath=rpmb.jfrog.io/artifactory/gcc11custom
 ARG repoproxy=
 
-ENV YUM0 $repopath
-ENV YUM2 $gccrepopath
-ENV YUM3 centos
+ENV DNF0 $repopath
+ENV DNF2 $gccrepopath
+ENV DNF3 rocky
 
 ENV http_proxy $repoproxy
 ENV https_proxy $repoproxy
 
 USER root
-COPY system/etc/yum.repos.d/bintray-gcccustom-yum.repo /etc/yum.repos.d/bintray-gcccustom.repo
+COPY system/etc/yum.repos.d/bintray-gcccustom.repo /etc/yum.repos.d/bintray-gcccustom.repo
 
 # install common build tools (autotools, compilers, parsers etc)
-RUN yum -y --enablerepo bintray-gcccustom install \
+RUN dnf -y --enablerepo bintray-gcccustom install \
         autoconf \
         bison \
         flex \
-        gcc-11.3.1 \
-        gcc-c++-11.3.1 \
+        gcc-11.5.0 \
+        gcc-c++-11.5.0 \
         "libtool >= 2.4.7" \
         make \
         which \
-    && yum clean all && rm -rf /var/cache/yum /var/lib/rpm/__db*
+    && dnf clean all && rm -rf /var/cache/dnf /var/lib/rpm/__db*
 
 VOLUME ${BUILD_TOPDIR}/SRPMS ${BUILD_TOPDIR}/RPMS
 

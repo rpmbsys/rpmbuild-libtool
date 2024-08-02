@@ -1,31 +1,32 @@
-ARG os=7.9.2009
+ARG os=8.10.20240528
 FROM aursu/rpmbuild:${os}-build
 
 ARG repopath=rpmb.jfrog.io/artifactory/custom
-ARG gccrepopath=rpmb.jfrog.io/artifactory/custom
+ARG gccrepopath=rpmb.jfrog.io/artifactory/gcc11custom
 ARG repoproxy=
 
-ENV YUM0 $repopath
-ENV YUM2 $gccrepopath
-ENV YUM3 centos
+ENV DNF0 $repopath
+ENV DNF2 $gccrepopath
+ENV DNF3 rocky
 
 ENV http_proxy $repoproxy
 ENV https_proxy $repoproxy
 
 USER root
-COPY system/etc/yum.repos.d/bintray-gcccustom-yum.repo /etc/yum.repos.d/bintray-gcccustom.repo
+COPY system/etc/yum.repos.d/bintray-gcccustom.repo /etc/yum.repos.d/bintray-gcccustom.repo
 
-RUN yum -y install \
+RUN dnf -y install \
         help2man \
         texinfo \
-    && yum clean all && rm -rf /var/cache/yum /var/lib/rpm/__db*
+    && dnf clean all && rm -rf /var/cache/dnf /var/lib/rpm/__db*
 
 RUN rpm -e libtool \
-    && yum -y --enablerepo bintray-custom install \
-        gcc-c++-8.5.0 \
-        gcc-gfortran-8.5.0 \
-        libstdc++-devel-8.5.0 \
-    && yum clean all && rm -rf /var/cache/yum /var/lib/rpm/__db*
+    && dnf -y --enablerepo bintray-gcccustom install \
+        "annobin >= 12.24" \
+        gcc-c++-11.5.0 \
+        gcc-gfortran-11.5.0 \
+        libstdc++-devel-11.5.0 \
+    && dnf clean all && rm -rf /var/cache/dnf /var/lib/rpm/__db*
 
 COPY SOURCES ${BUILD_TOPDIR}/SOURCES
 COPY SPECS ${BUILD_TOPDIR}/SPECS
